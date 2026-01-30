@@ -87,56 +87,132 @@ meeting_summarizer/
 
 ### Prerequisites
 
-**Python 3.9 or higher**, 8GB RAM minimum (16GB recommended)
+- **Windows 11** (or Windows 10)
+- **Python 3.9 or higher** - Download from [python.org](https://www.python.org/downloads/)
+- **8GB RAM minimum** (16GB recommended)
+- **10GB free disk space** (for models and dependencies)
 
-### Step 1: Clone/Download Project
+### Step 1: Install Python (if not installed)
 
-```bash
-cd meeting_summarizer
+1. Download Python 3.11+ from https://www.python.org/downloads/windows/
+2. **Important:** Check "Add Python to PATH" during installation
+3. Verify installation:
+   ```powershell
+   python --version
+   ```
+
+### Step 2: Clone/Download Project
+
+```powershell
+# Navigate to project folder
+cd C:\Users\YourUsername\Downloads\meeting_summarizer
 ```
 
-### Step 2: Install Python Dependencies
+### Step 3: Install Python Dependencies
 
-```bash
+```powershell
+# Install all required packages
 pip install -r requirements.txt
+
+# Or install individually:
+pip install librosa soundfile numpy torch transformers nltk fastapi uvicorn python-multipart tqdm python-dotenv pydantic openai-whisper ollama streamlit streamlit-audiorec
 ```
 
-### Step 3: Install ffmpeg
+**Note:** First installation may take 5-10 minutes as it downloads PyTorch and other large packages.
 
-ffmpeg is required for audio processing:
+### Step 4: Install ffmpeg (Required for Audio Processing)
 
-**Windows (Chocolatey):**
-```bash
+**Option A - Using Chocolatey (Recommended):**
+```powershell
+# Install Chocolatey first if not installed (Run as Administrator):
+Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+
+# Install ffmpeg:
 choco install ffmpeg
 ```
 
-**Windows (Manual):**
-Download from https://ffmpeg.org/download.html and add to PATH
+**Option B - Manual Installation:**
+1. Download ffmpeg from https://www.gyan.dev/ffmpeg/builds/ (choose "ffmpeg-release-essentials.zip")
+2. Extract to `C:\ffmpeg`
+3. Add to PATH:
+   - Open "Environment Variables" in Windows Settings
+   - Edit "Path" under System variables
+   - Add `C:\ffmpeg\bin`
+   - Click OK and restart terminal
+4. Verify: `ffmpeg -version`
 
-**macOS:**
-```bash
-brew install ffmpeg
-```
+### Step 5: Install Ollama (LLM Backend)
 
-**Linux (Ubuntu):**
-```bash
-apt-get install ffmpeg
-```
+1. Download Ollama for Windows from https://ollama.ai/download
+2. Run the installer (OllamaSetup.exe)
+3. After installation, open PowerShell and download the model:
+   ```powershell
+   # Download Mistral 7B model (~4GB)
+   ollama pull mistral:7b
+   
+   # Or download smaller/faster alternatives:
+   ollama pull phi           # 2GB - faster, less accurate
+   ollama pull llama2        # 4GB - good alternative
+   ```
+4. Ollama runs automatically as a Windows service - no need to start manually
 
-### Step 4: Verify Installation
+### Step 6: Verify Installation
 
-```bash
+```powershell
+# Check system status
 python main.py status
 ```
 
 Expected output:
 ```
+✓ Configuration loaded
 ✓ Python Dependencies
 ✓ Audio Input Directory
 ✓ Output Directory
 ✓ Whisper Model
 ✓ LLM Backend
 ```
+
+### Step 7: Run the Application
+
+**Option A - Streamlit Web UI (Recommended):**
+```powershell
+streamlit run app.py
+```
+Then open http://localhost:8501 in your browser
+
+**Option B - Command Line:**
+```powershell
+# Place audio file in audio_input/ folder
+python main.py summarize audio_input\your_meeting.mp3
+```
+
+### Troubleshooting Windows 11
+
+**Issue: "Python not recognized"**
+- Solution: Reinstall Python and check "Add to PATH" option
+
+**Issue: "ffmpeg not found"**
+- Solution: Restart terminal after installing ffmpeg, or manually add to PATH
+
+**Issue: "Permission denied" during pip install**
+- Solution: Run PowerShell as Administrator
+
+**Issue: Ollama connection failed**
+- Solution: Check if Ollama service is running:
+  ```powershell
+  Get-Service Ollama
+  # If stopped, start it:
+  Start-Service Ollama
+  ```
+
+**Issue: "CUDA error" with Whisper**
+- Solution: This is normal - the app automatically falls back to CPU mode
+
+**Issue: Slow processing**
+- Solution: Use smaller models:
+  - Whisper: Change to "tiny" or "base" in config/settings.py
+  - LLM: Use "phi" model instead of "mistral"
 
 ---
 
