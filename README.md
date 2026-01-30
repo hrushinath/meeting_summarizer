@@ -113,12 +113,34 @@ cd C:\Users\YourUsername\Downloads\meeting_summarizer
 ```powershell
 # Install all required packages
 pip install -r requirements.txt
-
-# Or install individually:
-pip install librosa soundfile numpy torch transformers nltk fastapi uvicorn python-multipart tqdm python-dotenv pydantic openai-whisper ollama streamlit streamlit-audiorec
 ```
 
-**Note:** First installation may take 5-10 minutes as it downloads PyTorch and other large packages.
+**Key Packages Installed:**
+- `openai-whisper` - Speech-to-text AI model
+- `ollama` - Local LLM backend
+- `torch` - Deep learning framework (~2GB)
+- `transformers` - HuggingFace models
+- `streamlit` - Web UI framework
+- `streamlit-audiorec` - Audio recording component
+- `librosa` - Audio processing
+- `fastapi` - REST API (optional)
+
+**Alternative - Manual Installation:**
+```powershell
+# Core dependencies
+pip install librosa soundfile numpy torch transformers nltk
+
+# LLM and API
+pip install openai-whisper ollama fastapi uvicorn python-multipart
+
+# Web UI (Streamlit)
+pip install streamlit streamlit-audiorec
+
+# Utilities
+pip install tqdm python-dotenv pydantic
+```
+
+**Note:** First installation may take 5-10 minutes as it downloads PyTorch (~2GB) and other large packages.
 
 ### Step 4: Install ffmpeg (Required for Audio Processing)
 
@@ -176,16 +198,46 @@ Expected output:
 ### Step 7: Run the Application
 
 **Option A - Streamlit Web UI (Recommended):**
+
+Streamlit provides a beautiful web interface with:
+- 📤 File upload or 🎙️ live audio recording
+- 📊 Real-time processing progress
+- 🎨 Rich visual display of results
+- 💾 Easy download of summaries
+
 ```powershell
+# Start the Streamlit application
 streamlit run app.py
 ```
-Then open http://localhost:8501 in your browser
+
+The app will automatically open in your browser at **http://localhost:8501**
+
+**Streamlit Features:**
+- Drag-and-drop audio file upload
+- Live meeting recording (with microphone)
+- Progress indicators during processing
+- Color-coded results display
+- One-click JSON/TXT downloads
+
+**Using the Web UI:**
+1. **Upload Tab**: Drag and drop your meeting audio file (MP3, WAV, M4A, OGG, FLAC)
+2. **Record Tab**: Click the microphone to record a live meeting
+3. Click **"Process Meeting"** button
+4. Wait for AI processing (first run takes longer as models load)
+5. View results and download summary files
 
 **Option B - Command Line:**
 ```powershell
 # Place audio file in audio_input/ folder
 python main.py summarize audio_input\your_meeting.mp3
 ```
+
+**Option C - REST API Server:**
+```powershell
+# Start FastAPI server
+python server.py
+```
+Then access at http://localhost:8000/docs
 
 ### Troubleshooting Windows 11
 
@@ -213,6 +265,24 @@ python main.py summarize audio_input\your_meeting.mp3
 - Solution: Use smaller models:
   - Whisper: Change to "tiny" or "base" in config/settings.py
   - LLM: Use "phi" model instead of "mistral"
+
+**Issue: Streamlit not opening in browser**
+- Solution: Manually open http://localhost:8501 in your browser
+- Or try: `streamlit run app.py --server.headless true`
+
+**Issue: Audio recording not working in Streamlit**
+- Solution: Browser microphone permissions - click "Allow" when prompted
+- Chrome/Edge: Click lock icon in address bar → Site settings → Microphone → Allow
+
+**Issue: "ModuleNotFoundError: No module named 'st_audiorec'"**
+- Solution: Install the audio recording package:
+  ```powershell
+  pip install streamlit-audiorec
+  ```
+
+**Issue: Streamlit app crashes during processing**
+- Solution: Increase memory allocation or use smaller models
+- Check logs in `logs/` folder for detailed error messages
 
 ---
 
