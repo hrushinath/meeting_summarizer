@@ -1,0 +1,85 @@
+"""
+Requirements file for pip installation
+Install with: pip install -r requirements.txt
+"""
+
+# ============================================================================
+# CORE DEPENDENCIES
+# ============================================================================
+
+# Speech-to-Text
+openai-whisper>=20231117  # OpenAI Whisper for accurate transcription
+
+# Audio Processing
+librosa>=0.10.0          # Audio loading and processing
+soundfile>=0.12.1        # WAV file I/O
+numpy>=1.24.0            # Numerical computing
+
+# LLM Inference
+ollama>=0.1.0            # Ollama client (for local LLM)
+transformers>=4.36.0     # HuggingFace Transformers (alternative LLM backend)
+torch>=2.0.0             # PyTorch (required by Transformers and Whisper)
+pydantic>=2.0.0          # Data validation
+
+# Text Processing
+nltk>=3.8.1              # Natural language toolkit for text processing
+spacy>=3.7.2             # Advanced NLP (optional, for better preprocessing)
+
+# Web API (Optional)
+fastapi>=0.104.0         # FastAPI framework
+uvicorn>=0.24.0          # ASGI server for FastAPI
+python-multipart>=0.0.6  # Form data support
+
+# Utilities
+python-dotenv>=1.0.0     # Environment variable management
+tqdm>=4.66.0             # Progress bars
+
+# ============================================================================
+# DEVELOPMENT DEPENDENCIES (Optional)
+# ============================================================================
+# These are optional - only needed for development/testing
+
+# Testing
+pytest>=7.4.0            # Testing framework
+pytest-cov>=4.1.0        # Coverage reporting
+
+# Code Quality
+black>=23.11.0           # Code formatter
+flake8>=6.1.0            # Linter
+mypy>=1.7.0              # Type checking
+
+# Documentation
+sphinx>=7.2.0            # Documentation generator (optional)
+
+# ============================================================================
+# NOTES FOR INSTALLATION
+# ============================================================================
+#
+# 1. Install base requirements:
+#    pip install -r requirements.txt
+#
+# 2. For Whisper to work, you also need ffmpeg:
+#    - Windows: choco install ffmpeg (or download from ffmpeg.org)
+#    - macOS: brew install ffmpeg
+#    - Linux: apt-get install ffmpeg
+#
+# 3. For LLM support with Ollama:
+#    - Download Ollama from https://ollama.ai
+#    - Run: ollama pull mistral (or your desired model)
+#    - Start with: ollama serve
+#
+# 4. For HuggingFace Transformers backend:
+#    - Models will auto-download on first use
+#    - Requires ~4-7GB disk space for Mistral-7B
+#    - Requires 4-8GB VRAM for inference
+#
+# ============================================================================
+# SPECIFIC VERSIONS FOR COMPATIBILITY
+# ============================================================================
+#
+# Python: 3.9 - 3.11 (tested)
+# CUDA: 11.8 or 12.1 (optional, for GPU acceleration)
+# Memory: Minimum 8GB RAM (16GB recommended)
+# Disk: 10GB for models + audio files
+#
+# ============================================================================

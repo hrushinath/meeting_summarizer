@@ -1,0 +1,11 @@
+Extract specific action items from the meeting transcript. An action item should include:
+1. The specific task or deliverable
+2. Who is responsible for completing it
+3. When it needs to be completed (deadline)
+
+For each action item identified, provide it in the following format:
+- TASK: [Clear description of what needs to be done]
+- OWNER: [Person's name or role]
+- DEADLINE: [Specific date or timeframe, or "Not specified"]
+
+Only include items that are clearly assigned to someone or have clear ownership implied by context.
